@@ -12,7 +12,7 @@ G_ID_Sim = data.G_ID_Sim
 
 GQ = G.*Q;
 
-rho = 0.025;
+p = 0.025;
 
 delta_t = t(2)-t(1)
 V = 4 % [L]
@@ -34,13 +34,13 @@ Y = zeros(n,1);
 for i = 1:n-trapezium_interval
     % sum the ends of the trapezium and then add everything in between
 
-    G_trapezium = (0.5*delta_t*trapezium_interval)*(G(i) + G(i+trapezium_interval) + rho*2*sum(G(i+1:i+trapezium_interval-1)));
+    G_trapezium = (0.5*delta_t)*(G(i) + G(i+trapezium_interval) + p*2*sum(G(i+1:i+trapezium_interval-1)));
 
     G_difference = G(i+trapezium_interval) - G(i);
 
-    U_trapezium = (0.5*delta_t*trapezium_interval)*(U(i) + U(i+trapezium_interval) + 2*sum(U(i+1:i+trapezium_interval-1)))/V;
+    U_trapezium = (0.5*delta_t)*(U(i) + U(i+trapezium_interval) + 2*sum(U(i+1:i+trapezium_interval-1)))/V;
 
-    GQ_trapezium = (0.5*delta_t*trapezium_interval)*(GQ(i) + GQ(i+trapezium_interval) + rho*2*sum(GQ(i+1:i+trapezium_interval-1)));
+    GQ_trapezium = (0.5*delta_t)*(GQ(i) + GQ(i+trapezium_interval) + 2*sum(GQ(i+1:i+trapezium_interval-1)));
 
 
     X(i,1) = -GQ_trapezium;

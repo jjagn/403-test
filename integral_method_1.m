@@ -26,11 +26,11 @@ Y = zeros(n,1);
 %% MAIN LOOP
 for i = 1:n-trapezium_interval
     % sum the ends of the trapezium and then add everything in between
-    C_trapezium = (0.5*delta_t*trapezium_interval)*(C(i) + C(i+trapezium_interval) + 2*sum(C(i+1:i+trapezium_interval-1)));
+    C_trapezium = (0.5*delta_t)*(C(i) + C(i+trapezium_interval) + 2*sum(C(i+1:i+trapezium_interval-1)));
 
     C_difference = C(i+trapezium_interval) - C(i);
 
-    U_trapezium = (0.5*delta_t*trapezium_interval)*(U(i) + U(i+trapezium_interval) + 2*sum(U(i+1:i+trapezium_interval-1)))/V;
+    U_trapezium = (0.5*delta_t)*(U(i) + U(i+trapezium_interval) + 2*sum(U(i+1:i+trapezium_interval-1)))/V;
 
     X(i,1) = -C_trapezium;
     Y(i,1) = C_difference - U_trapezium;

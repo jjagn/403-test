@@ -10,6 +10,9 @@ y = data.y
 plot(t, y, 'x')
 hold on
 
+xlabel("Time [s]")
+ylabel("Position [m]")
+
 %% COMPONENTS OF Y
 num_theta = 3; % number of y components to identify
 

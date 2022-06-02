@@ -18,8 +18,7 @@ num_theta = 2; % number of y components to identify
 
 % Y = A*THETA where THETA = [theta_1; theta_2;... theta_n]
 % for this question, y = theta_1*exp(t) + theta_2
-% size of A matrix = rows x columns = number of datapoints x number of
-% parameters to be identified
+% size of A matrix = rows x columns = 
 
 % predefine A matrix
 A = zeros(length(y), num_theta)
@@ -41,11 +40,6 @@ y_solved = theta_1*exp(t) + theta_2
 
 plot(t, y_solved)
 legend('Measured data', "Identified equation")
-% HOW DOES THE MODEL STACK UP TO THE MEASURED DATA?
-% mention:
-%   y-intercept
-%   general behaviour
-%   how the model matches areas where the data is changing rapidly
 
 %% FIND AVERAGE ERROR
 average_absolute_error = sum(abs(y-y_solved))/length(y_solved)

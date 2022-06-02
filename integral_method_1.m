@@ -6,6 +6,8 @@ data = load("IM_data/IM_Data_1.mat")
 t = data.t
 U = data.U
 C = data.C
+C_ID_Sim = data.C_ID_Sim
+t_Sim = data.t_Sim
 
 delta_t = t(2)-t(1)
 V = 4 % [L]
@@ -15,11 +17,9 @@ interval = 2 % larger interval can lose information if rapid changes are present
 n = length(t)
 
 %% PLOT
-plot(t, [C U])
+plot(t, [C U], 'x')
 hold on
 xlabel("Time [m]")
-
-legend("Creatinine concentration [mmol/L]", "Creatinine inputs [mmol/min]")
 
 X = zeros(n,1);
 Y = zeros(n,1);
@@ -33,11 +33,15 @@ for i = 1:n-interval
 
     C_difference = C(i+interval) - C(i);
 
-    U_trapezium = (0.5*delta_t)*(U(i) + U(i+interval) + 2*sum(U(i+1:i+interval-1)))/V;
+    U_trapezium = (0.5*delta_t)*(U(i) + U(i+interval) + 2*sum(U(i+1:i+interval-1)));
 
     X(i,1) = -C_trapezium;
-    Y(i,1) = C_difference - U_trapezium;
+    Y(i,1) = C_difference - U_trapezium/V;
 end
 
 % K = inv(X'*X)*X'*Y
 K = X\Y
+
+%% PLOT FORWARD SIM MODEL
+plot(t_Sim, C_ID_Sim)
+legend("Creatinine concentration [mmol/L]", "Creatinine inputs [mmol/min]", "Simulated creatinine concentration [mmol/L]")

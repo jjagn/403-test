@@ -25,8 +25,6 @@ n = length(t)
 plot(t, [G U], 'x')
 hold on
 
-legend("Creatinine concentration", "Creatinine inputs")
-
 X = zeros(n,1);
 Y = zeros(n,1);
 
@@ -34,6 +32,11 @@ Y = zeros(n,1);
 for i = 1:n-interval
     % sum the ends of the trapezium and then add everything in between
     % define trapeziums
+
+    % original equation is:
+    % G_dot = -p*G + U/V - SI*(G*Q)
+    % rearrange for SI and GQ
+    % SI(GQ) = -p*G + U/V - G_dot
 
     G_trapezium = (0.5*delta_t)*(G(i) + G(i+interval) + 2*sum(G(i+1:i+interval-1)));
     U_trapezium = (0.5*delta_t)*(U(i) + U(i+interval) + 2*sum(U(i+1:i+interval-1)));
@@ -45,15 +48,16 @@ for i = 1:n-interval
 
     % fill X and Y matrices, rearrange left side (X) for unknown qty, Y
     % with everything else
-    X(i,1) = -GQ_trapezium;
-    Y(i,1) = G_difference + G_trapezium*p - U_trapezium/V; % makes more sense this way
+    X(i) = GQ_trapezium;
+    Y(i) = -G_difference - p*G_trapezium + U_trapezium/V; % makes more sense this way
 end
 
 % this is pseudoinverse, should give same answer,
 % backslash is more numerically stable and faster acc to matlab
-K = inv(X'*X)*X'*Y
+SI = inv(X'*X)*X'*Y
 SI = X\Y
 
 %% PLOT FORWARD SIM
 hold on
 plot(t_sim, G_ID_Sim)
+legend("Blood glucose concentration [mmol/L]", "Glucose inputs [mmol/min]", "Simulated blood glucose concentration [mmol/L]")
